@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<!--
+	Linear by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Eventos Madrid</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,500,900' rel='stylesheet' type='text/css'>
+		<!--
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-panels.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+         -->
+			<link rel="stylesheet" href="/css/css/skel-noscript.css" />
+			<link rel="stylesheet" href="/css/css/style.css" />
+			<link rel="stylesheet" href="/css/css/style-desktop.css" />
+            {% if isUser %}
+                <link rel="stylesheet" href="/css/css/{{user}}.css" />
+            {% endif %}
+		<!--
+        </noscript>
+        -->
+	</head>
+	<body class="homepage">
+
+	<!-- Header -->
+		<div id="header">
+			<div id="nav-wrapper"> 
+				<!-- Nav -->
+				<nav id="nav">
+					<ul>
+                        {% if isUser %}
+                            <li><p>Eres {{ user }}</p></li>
+						    <li><a href="/logout">Cerrar sesión</a></li>
+                            <li><a href="/{{user}}">Tú página personal</a></li>
+                        {% else %}
+                            <li><p>No estas registrado</p></li>
+                            <li>
+                                <form method="post" action="/login">
+                                    {% csrf_token %}
+                                    <table>
+                                        <tr><td><label>Nombre:</label></td>
+                                            <td>{{ form.username }}</td></tr>
+                                        <tr><td><label>Contraseña:</label></td>
+                                            <td>{{ form.password }}</td></tr>
+                                    </table>
+                                    <input type="submit" class="btn" value="Enviar" />
+                                </form>
+                            </li>
+                        {% endif %}
+						<li><a href="/todas">Todas</a></li>
+						<li><a href="/ayuda">Ayuda</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="container"> 
+				
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">Eventos Madrid</a></h1>
+					<span class="tag">Cultura y ocio</span>
+				</div>
+			</div>
+		</div>
+
+	<!-- Main -->
+
+    <div id="main">
+		<div id="content" class="container">
+            <header>
+			    <h2>Bienvenido a Eventos Madrid</h2>
+			</header>
+			<p>En <strong>Eventos Madrid</strong> descubrirás las próximas actividades de cultura y ocio organizadas por la <a href="http://datos.madrid.es/portal/site/egob/menuitem.c05c1f754a33a9fbe4b2e4b284f1a5a0/?vgnextoid=6c0b6d01df986410VgnVCM2000000c205a0aRCRD&vgnextchannel=374512b9ace9f310VgnVCM100000171f5a0aRCRD">Comunidad de Madrid</a>. Descubre todas las opciones que ofrece tu ciudad en los próximos 100 dias. Si tienes cualquier duda no dudes en pregutar <a href="http://twitter.com/RebeccaSaez">@RebeccaSaez</a>.</p>
+            <hr />
+            <div class="row">
+                {% for i in list_event %}
+			        <section class="6u">
+                        <a href="#" class="image full"><img src="css/images/madrid{{ forloop.counter }}.jpg" alt=""></a>
+
+					    <ul>
+                            <li class="title"><strong>Título: {{ i.title }}</strong></li>
+                            <li>Tipo: {{ i.type }}</li>
+                            <li>Precio: {{ i.price }}€</li>
+                            <li>Fecha: {{ i.date }}</li>
+                            {% if i.longdur %}
+                                <li>Evento de larga duracion</li>
+                            {% else %}
+                                <li>Evento de corta duracion</li>
+                            {% endif %}
+                            <li>Duración: {{ i.duration }}</li>
+                            <li><a href=/actividad/{{i.id}}>Ver detalle</a></li>
+                        <ul>
+                    </section>
+                {% endfor %}
+			</div>
+        </div>
+	</div>
+
+    <!-- Featured -->
+		<div id="featured">
+			<div class="container">
+                <div class="row">
+                    {% for i in list_user %}
+					    <section class="4u">
+						    <div class="cropindex">
+                                <img src="/templated-linear/documents/anonimo.jpg" />
+                                {% for j in list_images %}
+                                    {% if j.user.name = i.name %}
+                                        {% if j.imagen %}
+                                            <img src="{{ j.imagen }}" />
+                                        {% else %}
+                                            <img src="/templated-linear/documents/anonimo.jpg" />
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+						    <h3>{{ i.page }}</h3>
+                            <p class="user">{{ i.name }}</strong></p>
+						    <p>{{ i.description }}</p>
+						    <a href="/{{i.name}}" class="button button-style1">Ver más</a>
+                            <br/><br/>
+					    </section>
+                    {% endfor %}
+				</div>
+			</div>
+		</div>
+
+	<!-- Tweet -->
+		<div id="tweet">
+			<div class="container">
+				<section>
+					<blockquote>&ldquo;Pues el invierno y el verano, en Madrid solo son buenos, desde la cuna a Madrid y desde Madrid al cielo&rdquo;</blockquote>
+				</section>
+			</div>
+		</div>
+
+	<!-- Footer -->
+		<div id="footer">
+			<div class="container">
+				<section>
+					<header>
+						<h2>Comparte esta página</h2>
+						<span class="byline">Lo nuevo de Madrid, haz correr la voz</span>
+					</header>
+					<ul class="contact">
+						<li><a href="https://twitter.com" class="fa fa-twitter"><span>Twitter</span></a></li>
+						<li class="active"><a href="https://facebook.com" class="fa fa-facebook"><span>Facebook</span></a></li>
+						<li><a href="https://pinterest.com" class="fa fa-dribbble"><span>Pinterest</span></a></li>
+						<li><a href="https://plus.google.com" class="fa fa-tumblr"><span>Google+</span></a></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+	<!-- Copyright -->
+		<div id="copyright">
+			<div class="container">
+				Design: <a href="http://twitter.com/rebeccasaez">@RebeccaSaez</a>
+			</div>
+		</div>
+
+	</body>
+</html>

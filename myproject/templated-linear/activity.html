@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<!--
+	Linear by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Eventos Madrid</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,500,900' rel='stylesheet' type='text/css'>
+		<!--
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-panels.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+         -->
+			<link rel="stylesheet" href="/css/css/skel-noscript.css" />
+			<link rel="stylesheet" href="/css/css/style.css" />
+			<link rel="stylesheet" href="/css/css/style-desktop.css" />
+            {% if isUser %}
+                <link rel="stylesheet" href="/css/css/{{user}}.css" />
+            {% endif %}
+		<!--
+        </noscript>
+        -->
+	</head>
+	<body>
+
+	<!-- Header -->
+		<div id="header">
+			<div id="nav-wrapper"> 
+				<!-- Nav -->
+				<nav id="nav">
+					<ul>
+                        {% if isUser %}
+                            <li><p>Eres {{ user }}</p></li>
+						    <li><a href="/logout">Cerrar sesión</a></li>
+                        {% else %}
+                            <li><p>No estas registrado</p></li>
+                            <li>
+                                <form method="post" action="/login">
+                                    {% csrf_token %}
+                                    <table>
+                                        <tr><td><label>Nombre:</label></td>
+                                            <td>{{ form.username }}</td></tr>
+                                        <tr><td><label>Contraseña:</label></td>
+                                            <td>{{ form.password }}</td></tr>
+                                    </table>
+                                    <input type="submit" class="btn" value="Enviar" />
+                                </form>
+                            </li>
+                        {% endif %}
+						<li><a href="/">Inicio</a></li>
+						<li><a href="/todas">Todas</a></li>
+						<li><a href="/ayuda">Ayuda</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="container"> 
+				
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">Eventos Madrid</a></h1>
+					<span class="tag">Cultura y ocio</span>
+				</div>
+			</div>
+		</div>
+	<!-- Header --> 
+
+	<!-- Main -->
+		<div id="main">
+			<div class="container">
+				<div class="row">
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+                            {% if ok %}
+							    <header>
+								    <span class="byline"><strong>{{ activ.title }}</strong></span>
+							    </header>
+							    <p>
+                                    <ul>
+                                        <li>Tipo: {{ activ.type }}</li>
+                                        <li>Precio: {{ activ.price }}€, {{ activ.price_descrip }}</li>
+                                        <li>Fecha: {{ activ.date }}</li>
+                                        {% if i.longdur %}
+                                            <li>Evento de larga duracion</li>
+                                        {% else %}
+                                            <li>Evento de corta duracion</li>
+                                        {% endif %}
+                                        <li>Duración: {{ activ.duration }}</li>
+                                        <li>{{ info }}</li>
+                                        <li><a href={{activ.url}}>Detalle</a></li>
+                                        {% if isUser %}
+                                            {% if select %}
+                                                <li><a href=/eliminar/{{activ.id}} class="button button-style1">Eliminar</a></li>
+                                            {% else %}
+                                                <li><a href=/incluir/{{activ.id}} class="button button-style1">Seleccionar</a></li>
+                                            {% endif %}
+                                        {% endif %}
+                                    </ul>
+                                </p>
+
+                                <hr/>
+                                <header>
+								    <span class="byline"><strong>Valoración del evento</strong></span>
+							    </header>
+
+                                {% if score_list %}
+                                    <p>{{ scores }} usuarios ya han valorado este evento. La puntuación media es de {{ average }}</p>
+                                {% else %}
+                                    <p>Todavía no hay puntuaciones para este evento. Sé el primero en votar</p>
+                                {% endif %}
+
+                                {% if isUser %}
+                                    <form action="" method="POST">
+                                        {{ score_form }}
+                                        <input type="submit" class="btn" value="Enviar">
+                                    </form>
+                                {% else %}
+                                    <p>Regístrate para puntuar este evento</p>
+                                {% endif %}
+                                <hr/>
+
+                                <header>
+								    <span class="byline"><strong>Comentarios</strong></span>
+							    </header>
+
+                                {% if isUser %}
+                                    <form action="" method="POST">
+                                        <tr><td><label>Envía tu comentario: </label></td>
+                                            <br/>
+                                            <td>{{ comment_form.Comentario }}</td></tr>
+                                            <br/>
+                                        <input type="submit" class="btn" value="Enviar">
+                                    </form>
+                                {% else %}
+                                    <p>Regístrate para comentar sobre este evento</p>
+                                {% endif %}
+                                <br/>
+
+                                {% if comments_list %}
+                                    <ul class="style">
+                                    {% for i in comments_list %}
+                                        <li>
+                                            <p> <strong class="comment">{{ i.user.name }}:</strong> {{ i.comment }}</p>
+                                            <p class="posted"> {{ i.date }} </p>
+                                            <br/>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>Todavía no hay comentarios sobre este envento Sé el primero en opininar</p>
+                                {% endif %}
+
+                            {% else %}
+							    <header>
+								    <h2>Evento no encontrado</h2>
+								    <span class="byline">El evento {{ id }} no está disponible</span>
+							    </header>
+                            {% endif %}
+						</section>
+					</div>
+
+					<!-- Sidebar -->
+					<div id="sidebar" class="4u">
+						<section>
+							<header>
+								<h2>Enlaces de interés</h2>
+							</header>
+							<div class="row">
+								<section class="6u">
+									<ul class="default">
+                                        {% if isUser %}
+										    <li><a href="/{{user}}/rss">Tú canal RSS</a></li>
+                                        {% endif %}
+                                        <li><a href="/rss">Canal RSS de Madrid</a></li>
+                                        <li><a href="https://github.com/RebeccaSaez">Github RebeccaSaez</a></li>
+									</ul>
+								</section>
+								<section class="6u">
+									<ul class="default">
+                                        {% if isUser %}
+										    <li><a href="/{{user}}">Tú página personal</a></li>
+                                        {% endif %}
+										<li><a href="http://wwww.madrid.es">Ayuntamiento de Madrid</a></li>
+										<li><a href="http://datos.madrid.es/portal/site/egob/menuitem.ac61933d6ee3c31cae77ae7784f1a5a0/?vgnextoid=00149033f2201410VgnVCM100000171f5a0aRCRD&format=xml&file=0&filename=206974-0-agenda-eventos-culturales-100&mgmtid=6c0b6d01df986410VgnVCM2000000c205a0aRCRD">XML Fuente</a></li>
+									</ul>
+								</section>
+							</div>
+						</section>
+						<section>
+							<header>
+								<h2>Actividad reciente</h2>
+							</header>
+							<ul class="style">
+								<li>
+                                    {% if select_list %}
+									    <p>Última selección por: <strong class="comment">{{ last_selection.user.name }}</strong></p>
+									    <p class="posted">{{ last_selection.date }}  |  Total: ({{ selections }})  selecciones</p>
+                                    {% else %}
+                                        <p>Aún no ha sido seleccionado</p>
+									    <p class="posted">Total: (0)  selecciones</p>
+                                    {% endif %}
+								</li>
+								<li>
+                                    {% if comments_list %}
+									    <p>Último comentario: <strong class="comment">{{ last_comment.user.name }},</strong> {{ last_comment.comment }}</p>
+									    <p class="posted">{{ last_comment.date }}  |  Total: ({{ comments }})  comentarios</p>
+                                    {% else %}
+                                        <p>Aún no hay comentarios</p>
+									    <p class="posted">Total: (0)  comentarios</p>
+                                    {% endif %}
+								</li>
+								<li>
+                                    {% if score_list %}
+									    <p>Última puntuación: <strong class="comment">{{ last_score.user.name }},</strong> {{ last_score.score }}</p>
+									    <p class="posted">{{ last_score.date }}  |  Total: ({{ scores }})  puntuaciones</p>
+                                    {% else %}
+                                        <p>Aún no hay puntuaciones</p>
+									    <p class="posted">Total: (0)  puntuaciones</p>
+                                    {% endif %}
+								</li>
+							</ul>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	<!-- Tweet -->
+		<div id="tweet">
+			<div class="container">
+				<section>
+					<blockquote>&ldquo;Pues el invierno y el verano, en Madrid solo son buenos, desde la cuna a Madrid y desde Madrid al cielo&rdquo;</blockquote>
+				</section>
+			</div>
+		</div>
+	<!-- /Tweet -->
+
+	<!-- Footer -->
+		<div id="footer">
+			<div class="container">
+				<section>
+					<header>
+						<h2>Comparte esta página</h2>
+						<span class="byline">Lo nuevo de Madrid, haz correr la voz</span>
+					</header>
+					<ul class="contact">
+						<li><a href="https://twitter.com" class="fa fa-twitter"><span>Twitter</span></a></li>
+						<li class="active"><a href="https://facebook.com" class="fa fa-facebook"><span>Facebook</span></a></li>
+						<li><a href="https://pinterest.com" class="fa fa-dribbble"><span>Pinterest</span></a></li>
+						<li><a href="https://plus.google.com" class="fa fa-tumblr"><span>Google+</span></a></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+	<!-- /Footer -->
+
+	<!-- Copyright -->
+		<div id="copyright">
+			<div class="container">
+				Design: <a href="http://twitter.com/rebeccasaez">@RebeccaSaez</a>
+			</div>
+		</div>
+
+
+	</body>
+</html>

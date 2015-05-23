@@ -1,0 +1,67 @@
+/* Images */
+
+	#header
+	{
+		position: relative;
+		background: url(../images/{{image}}) no-repeat bottom center;
+		background-attachment: fixed;
+		background-size: cover;
+		text-align: center;
+	}
+
+	#tweet
+	{
+		position: relative;
+		text-align: center;
+		background: url(../images/{{image}}) no-repeat center center;
+		background-attachment: fixed;
+		background-size: cover;
+	}
+
+
+/* Background */
+
+	#main
+	{
+		position: relative;
+		background: {{back_color}};
+	}
+
+/* Letter body */
+
+	body,input,textarea,select
+	{
+		font-family: 'Roboto', sans-serif;
+		font-size: {{letter_size}};
+		font-weight: 300;
+		line-height: 1.75em;
+		color: {{letter_color}};
+	}
+
+	h1,h2,h3,h4,h5,h6
+	{
+		font-weight: 300;
+		color: {{letter_color}};
+	}
+
+/* Title */
+
+    #logo a
+	{
+        font-family: {{letter_title}};
+		display: block;
+		text-decoration: none;
+		font-weight: 300;
+		line-height: 1em;
+		font-size: 7em;
+		color: {{title_color}};
+		letter-spacing: -0.05em;
+		margin: 0 0 0.125em 0;
+	}
+	
+	#logo span
+	{
+		font-size: 1.4em;
+		color: {{title_color}};
+        font-family: {{letter_title}};
+	}
